@@ -1,0 +1,215 @@
+{"conditions": [
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "ENGLISHMAN"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "color",
+          "value": "RED"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "SPANIARD"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "pet",
+          "value": "DOG"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "drink",
+          "value": "COFFEE"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "color",
+          "value": "GREEN"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "UKRAINIAN"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "drink",
+          "value": "TEA"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "color",
+          "value": "GREEN"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "NEXT_TO",
+          "houseAttribute": {
+            "type": "color",
+            "value": "IVORY"
+          }
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "OLD_GOLD"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "pet",
+          "value": "SNAILS"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "KOOLS"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "color",
+          "value": "YELLOW"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "drink",
+          "value": "MILK"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "CENTRAL"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "NORWEGIAN"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "FIRST"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "CHESTERFIELD"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "NEXT_TO",
+          "houseAttribute": {
+            "type": "pet",
+            "value": "FOX"
+          }
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "KOOLS"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "NEXT_TO",
+          "houseAttribute": {
+            "type": "pet",
+            "value": "HORSE"
+          }
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "LUCKY_STRIKE"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "drink",
+          "value": "ORANGE_JUICE"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "JAPANESE"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "smoke",
+          "value": "PARLIAMENT"
+        }
+      }
+    },
+    {
+      "first": {
+        "houseAttribute": {
+          "type": "nationality",
+          "value": "NORWEGIAN"
+        }
+      },
+      "second": {
+        "houseAttribute": {
+          "type": "location",
+          "direction": "NEXT_TO",
+          "houseAttribute": {
+            "type": "color",
+            "value": "BLUE"
+          }
+        }
+      }
+    }
+  ]
+}
