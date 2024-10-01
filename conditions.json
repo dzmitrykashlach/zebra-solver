@@ -65,7 +65,7 @@
       "second": {
         "houseAttribute": {
           "type": "location",
-          "direction": "NEXT_TO",
+          "direction": "TO_THE_RIGHT",
           "houseAttribute": {
             "type": "color",
             "value": "IVORY"

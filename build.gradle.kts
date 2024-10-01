@@ -10,12 +10,16 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs ("lib")
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-
+//    https://github.com/michaelbull/kotlin-itertools
+    implementation("com.michael-bull.kotlin-itertools:kotlin-itertools-jvm:1.0.1-SNAPSHOT")
     testImplementation(kotlin("test", kotlinVersion))
 }
 

@@ -127,3 +127,4 @@ HouseAttribute::class
         }
     }
 }
+

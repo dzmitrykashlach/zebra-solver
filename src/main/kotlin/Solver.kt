@@ -3,8 +3,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import org.homework.dto.Condition
-import org.homework.dto.House
+import org.homework.dto.*
 import org.homework.dto.enums.*
 import java.io.File
 
@@ -17,58 +16,35 @@ class Solver {
     fun execute(numberOfHouses: Int): String {
         houses = Array(numberOfHouses) { House() }
         val conditions = loadConditions()
-            .let { splitConditions(it) }
 
-        processAbsLocations(conditions.first)
-        processOtherConditions(conditions.second.plus(conditions.third))
-
-        return Json.encodeToString(houses)
-    }
-
-    private fun processAbsLocations(absLocations: List<Condition>) {
-        for (condition in absLocations) {
-            when ((condition.attributes.second as LocationAttribute).direction) {
-                Direction.FIRST -> houses[0] = mapAttribute(
-                    attribute = condition.attributes.first
-                )
-
-                Direction.CENTRAL -> houses[houses.size / 2] = mapAttribute(
-                    attribute = condition.attributes.first
-                )
-
-                else -> break
-            }
-
-        }
-    }
-
-    /* FIXME
-    - process relative locations & other conditions
-     */
-
-    private fun processOtherConditions(otherConditions: List<Condition>) {
-//        while (true){ FIXME - iterate through all permutations
-        otherConditions.forEach {
-            val condition = it
-            houses.forEach {
-                if (it.match(condition.attributes.first) && (condition.attributes.second.type != HouseAttributeType.LOCATION)) {
-                    it.apply(condition.attributes.second)
+        val nationalityPermutations = nationalityPermutations()
+        val colorPermutations = colorPermutations()
+        val petPermutations = petPermutations()
+        val drinkPermutations = drinkPermutations()
+        val smokePermutations = smokePermutations()
+        for (n in nationalityPermutations) {
+            for (c in colorPermutations) {
+                for (p in petPermutations) {
+                    for (d in drinkPermutations) {
+                        for (s in smokePermutations) {
+                            if (checkAllConditions(conditions, n, c, p, d, s)) {
+                                println(n)
+                                println(c)
+                                println(p)
+                                println(d)
+                                println(s)
+//                                create list of houses from combination which match
+                                for (i in 0..4) {
+                                    houses[i] = House(c[i], n[i], d[i], s[i], p[i])
+                                }
+                                return Json.encodeToString(houses)
+                            }
+                        }
+                    }
                 }
-//            find house with tha same attribute type and value as in condition.first
-//            apply condition.second
             }
         }
-
-//        }
-    }
-
-    private fun mapAttribute(attribute: HouseAttribute): House = when (attribute.type) {
-        HouseAttributeType.COLOR -> House(color = (attribute as ColorAttribute).value)
-        HouseAttributeType.DRINK -> House(drink = (attribute as DrinkAttribute).value)
-        HouseAttributeType.NATIONALITY -> House(nationality = (attribute as NationalityAttribute).value)
-        HouseAttributeType.PET -> House(pet = (attribute as PetAttribute).value)
-        HouseAttributeType.SMOKE -> House(smoke = (attribute as SmokeAttribute).value)
-        HouseAttributeType.LOCATION -> House()
+        throw Exception("ERROR: no valid combination in permutations")
     }
 
 
@@ -92,21 +68,77 @@ class Solver {
     }
 
 
-    private fun splitConditions(conditions: List<Condition>): Triple<List<Condition>, List<Condition>, List<Condition>> {
-        val (locations, other) = conditions.partition {
-            ((it.attributes.first.type == HouseAttributeType.LOCATION
-                    || it.attributes.second.type == HouseAttributeType.LOCATION))
-
+    private fun checkAllConditions(
+        conditions: List<Condition>,
+        nationalities: List<Nationality>,
+        colors: List<Color>,
+        pets: List<Pet>,
+        drinks: List<Drink>,
+        smokes: List<Smoke>
+    ): Boolean {
+        var conditionsMatch = true
+        for (condition in conditions) {
+            if (!checkSingleCondition(condition, nationalities, colors, pets, drinks, smokes)) {
+                conditionsMatch = false
+            }
         }
-        locations.apply { this.toMutableList() }
-        other.apply { this.toMutableList() }
-        val (absLocations, relLocations) = locations.partition {
+        return conditionsMatch
+    }
 
-            ((it.attributes.second.type == HouseAttributeType.LOCATION)
-                    && (((it.attributes.second as LocationAttribute).direction == Direction.FIRST)
-                    || ((it.attributes.second as LocationAttribute).direction == Direction.CENTRAL)))
-        }
-        return Triple(absLocations, relLocations, other)
+    private fun checkSingleCondition(
+        condition: Condition,
+        nationalities: List<Nationality>,
+        colors: List<Color>,
+        pets: List<Pet>,
+        drinks: List<Drink>,
+        smokes: List<Smoke>
+    ): Boolean {
+        val firstIndex =
+            when (condition.attributes.first.type) {
+                HouseAttributeType.NATIONALITY -> nationalities.indexOf((condition.attributes.first as NationalityAttribute).value)
+                HouseAttributeType.COLOR -> colors.indexOf((condition.attributes.first as ColorAttribute).value)
+                HouseAttributeType.PET -> pets.indexOf((condition.attributes.first as PetAttribute).value)
+                HouseAttributeType.DRINK -> drinks.indexOf((condition.attributes.first as DrinkAttribute).value)
+                HouseAttributeType.SMOKE -> smokes.indexOf((condition.attributes.first as SmokeAttribute).value)
+                HouseAttributeType.LOCATION -> throw Exception("Exception in input: put `location` to the second part of condition")
+            }
+
+        val secondIndex =
+            when (condition.attributes.second.type) {
+                HouseAttributeType.NATIONALITY -> nationalities.indexOf((condition.attributes.second as NationalityAttribute).value)
+                HouseAttributeType.COLOR -> colors.indexOf((condition.attributes.second as ColorAttribute).value)
+                HouseAttributeType.PET -> pets.indexOf((condition.attributes.second as PetAttribute).value)
+                HouseAttributeType.DRINK -> drinks.indexOf((condition.attributes.second as DrinkAttribute).value)
+                HouseAttributeType.SMOKE -> smokes.indexOf((condition.attributes.second as SmokeAttribute).value)
+                HouseAttributeType.LOCATION -> {
+                    if ((condition.attributes.second as LocationAttribute).direction != Direction.NEXT_TO) {
+                        findIndexByLocation(
+                            condition.attributes.second as LocationAttribute,
+                            nationalities,
+                            colors,
+                            pets,
+                            drinks,
+                            smokes
+                        )
+                    } else {
+                        findIndexByLocation(
+                            condition.attributes.second as LocationAttribute,
+                            nationalities,
+                            colors,
+                            pets,
+                            drinks,
+                            smokes
+                        ).let {
+                            if (it + 1 == firstIndex) {
+                                it + 1
+                            } else {
+                                it - 1
+                            }
+                        }
+                    }
+                }
+            }
+        return firstIndex == secondIndex
     }
 
 
